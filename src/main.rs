@@ -233,198 +233,226 @@ fn parse_trackinfo<P: AsRef<Path>>(path: P) -> Result<Vec<Tag>> {
         .map(|l| l.unwrap())
     {
         if let Some(caps) = INPUT_RE.captures(line.as_str()) {
+            let input = caps[2].to_string();
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.input = Some(caps[2].to_string());
+                    tag.input = Some(input);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.input = Some(caps[2].to_string());
+                    tag.input = Some(input);
                     tags.push(tag);
                 }
             } else {
-                global_tag.input = Some(caps[2].to_string());
+                global_tag.input = Some(input);
             }
         } else if let Some(caps) = TITLE_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.title = Some(caps[2].to_string());
+                    tag.title = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.title = Some(caps[2].to_string());
+                    tag.title = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.title = Some(caps[2].to_string());
+                global_tag.title = Some(trimmed);
             }
         } else if let Some(caps) = ARTIST_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.artist = Some(caps[2].to_string());
+                    tag.artist = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.artist = Some(caps[2].to_string());
+                    tag.artist = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.artist = Some(caps[2].to_string());
+                global_tag.artist = Some(trimmed);
             }
         } else if let Some(caps) = LYRICIST_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.lyricist = Some(caps[2].to_string());
+                    tag.lyricist = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.lyricist = Some(caps[2].to_string());
+                    tag.lyricist = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.lyricist = Some(caps[2].to_string());
+                global_tag.lyricist = Some(trimmed);
             }
         } else if let Some(caps) = COMPOSER_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.composer = Some(caps[2].to_string());
+                    tag.composer = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.composer = Some(caps[2].to_string());
+                    tag.composer = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.composer = Some(caps[2].to_string());
+                global_tag.composer = Some(trimmed);
             }
         } else if let Some(caps) = ARRANGER_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.arranger = Some(caps[2].to_string());
+                    tag.arranger = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.arranger = Some(caps[2].to_string());
+                    tag.arranger = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.arranger = Some(caps[2].to_string());
+                global_tag.arranger = Some(trimmed);
             }
         } else if let Some(caps) = ALBUM_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.album = Some(caps[2].to_string());
+                    tag.album = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.album = Some(caps[2].to_string());
+                    tag.album = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.album = Some(caps[2].to_string());
+                global_tag.album = Some(trimmed);
             }
         } else if let Some(caps) = DISC_RE.captures(line.as_str()) {
+            let disc = caps[2].parse().unwrap();
             if let Some(mat) = caps.get(1) {
-                let track = Some(mat.as_str().parse().unwrap());
+                let track = Some(disc);
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.disc = Some(caps[2].parse().unwrap());
+                    tag.disc = Some(disc);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.disc = Some(caps[2].parse().unwrap());
+                    tag.disc = Some(disc);
                     tags.push(tag);
                 }
             } else {
                 global_tag.disc = Some(caps[2].parse().unwrap());
             }
         } else if let Some(caps) = GENRE_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.genre = Some(caps[2].to_string());
+                    tag.genre = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.genre = Some(caps[2].to_string());
+                    tag.genre = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.genre = Some(caps[2].to_string());
+                global_tag.genre = Some(trimmed);
             }
         } else if let Some(caps) = DATE_RE.captures(line.as_str()) {
+            let date = [caps[2].parse().unwrap(), caps[3].parse().unwrap(), caps[4].parse().unwrap()];
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.date = Some([
-                        caps[2].parse().unwrap(),
-                        caps[3].parse().unwrap(),
-                        caps[4].parse().unwrap(),
-                    ]);
+                    tag.date = Some(date);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.date = Some([
-                        caps[2].parse().unwrap(),
-                        caps[3].parse().unwrap(),
-                        caps[4].parse().unwrap(),
-                    ]);
+                    tag.date = Some(date);
                     tags.push(tag);
                 }
             } else {
-                global_tag.date = Some([
-                    caps[2].parse().unwrap(),
-                    caps[3].parse().unwrap(),
-                    caps[4].parse().unwrap(),
-                ]);
+                global_tag.date = Some(date);
             }
         } else if let Some(caps) = LABEL_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.label = Some(caps[2].to_string());
+                    tag.label = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.label = Some(caps[2].to_string());
+                    tag.label = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.label = Some(caps[2].to_string());
+                global_tag.label = Some(trimmed);
             }
         } else if let Some(caps) = COMMENT_RE.captures(line.as_str()) {
+            let trimmed = caps[2].trim().to_string();
+            if trimmed != caps[2] {
+                println!("WARNING: Line \"{}\" trimmed!", line);
+            }
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.comment = Some(caps[2].to_string());
+                    tag.comment = Some(trimmed);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.comment = Some(caps[2].to_string());
+                    tag.comment = Some(trimmed);
                     tags.push(tag);
                 }
             } else {
-                global_tag.comment = Some(caps[2].to_string());
+                global_tag.comment = Some(trimmed);
             }
         } else if let Some(caps) = COVER_RE.captures(line.as_str()) {
+            let path = caps[2].to_string();
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
-                    tag.cover = Some(caps[2].to_string());
+                    tag.cover = Some(path);
                 } else {
                     let mut tag = global_tag.clone();
                     tag.track = track;
-                    tag.cover = Some(caps[2].to_string());
+                    tag.cover = Some(path);
                     tags.push(tag);
                 }
             } else {
-                global_tag.cover = Some(caps[2].to_string());
+                global_tag.cover = Some(path);
             }
         } else if !line.is_empty() {
             return Err(ReflacError::InvalidTrackinfo(line).into());
@@ -746,6 +774,7 @@ fn run() -> Result<()> {
     }
 
     // Parse trackinfo
+    println!("Parsing track info file ...");
     let tags = parse_trackinfo(&trackinfo_path)?;
 
     // Work directory
