@@ -389,7 +389,11 @@ fn parse_trackinfo<P: AsRef<Path>>(path: P) -> Result<Vec<Tag>> {
                 global_tag.genre = Some(trimmed);
             }
         } else if let Some(caps) = DATE_RE.captures(line.as_str()) {
-            let date = [caps[2].parse().unwrap(), caps[3].parse().unwrap(), caps[4].parse().unwrap()];
+            let date = [
+                caps[2].parse().unwrap(),
+                caps[3].parse().unwrap(),
+                caps[4].parse().unwrap(),
+            ];
             if let Some(mat) = caps.get(1) {
                 let track = Some(mat.as_str().parse().unwrap());
                 if let Some(tag) = tags.iter_mut().find(|t| t.track == track) {
@@ -811,7 +815,10 @@ fn run() -> Result<()> {
     for tag in &tags {
         let track = tag.track.unwrap();
         let path = get_track(track, &input_map_flacs[&track])?;
-        println!("  #{track} ← \"{}\"", path.file_name().unwrap().to_str().unwrap());
+        println!(
+            "  #{track} ← \"{}\"",
+            path.file_name().unwrap().to_str().unwrap()
+        );
         source_map.insert(track, path);
     }
 
@@ -869,7 +876,10 @@ fn run() -> Result<()> {
         let job = process_next.pop_front().unwrap();
         let out_path = album_path.join(job.output_path(padding));
         let track = job.track.unwrap();
-        println!("  #{track} → \"{}\"", out_path.file_name().unwrap().to_str().unwrap());
+        println!(
+            "  #{track} → \"{}\"",
+            out_path.file_name().unwrap().to_str().unwrap()
+        );
         process_working.push_back(recompress(
             &source_map[&track],
             &out_path,
@@ -881,7 +891,10 @@ fn run() -> Result<()> {
     while let Some(job) = process_next.pop_front() {
         let out_path = album_path.join(job.output_path(padding));
         let track = job.track.unwrap();
-        println!("  #{track} → \"{}\"", out_path.file_name().unwrap().to_str().unwrap());
+        println!(
+            "  #{track} → \"{}\"",
+            out_path.file_name().unwrap().to_str().unwrap()
+        );
         process_working.push_back(recompress(
             &source_map[&track],
             &out_path,
