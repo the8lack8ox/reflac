@@ -479,7 +479,7 @@ fn extract_archive<P: AsRef<Path>, Q: AsRef<Path>>(path: P, out_dir: Q) -> Resul
             _ => {
                 return Err(
                     ReflacError::UnknownArchiveType(ext.to_str().unwrap().to_string()).into(),
-                )
+                );
             }
         }
     }
@@ -586,7 +586,10 @@ fn get_cover<P: AsRef<Path>>(path: P, tmp_dir: &TempDir) -> Result<PathBuf> {
                     .status()?
                     .success()
                 {
-                    eprintln!("ERROR! Failed to extract cover from {}!", path.as_ref().display());
+                    eprintln!(
+                        "ERROR! Failed to extract cover from {}!",
+                        path.as_ref().display()
+                    );
                     std::process::exit(1);
                 }
                 return Ok(tmp_path);
@@ -779,7 +782,7 @@ fn run() -> Result<()> {
     for tag in &tags {
         let track = tag.track.unwrap();
         let path = get_track(track, &input_map_flacs[&track])?;
-        println!("  #{track} ← {:#?}", path.file_name().unwrap());
+        println!("  #{track} ← \"{}\"", path.file_name().unwrap().to_str().unwrap());
         source_map.insert(track, path);
     }
 
@@ -837,7 +840,7 @@ fn run() -> Result<()> {
         let job = process_next.pop_front().unwrap();
         let out_path = album_path.join(job.output_path(padding));
         let track = job.track.unwrap();
-        println!("  #{track} → {:#?}", out_path.file_name().unwrap());
+        println!("  #{track} → \"{}\"", out_path.file_name().unwrap().to_str().unwrap());
         process_working.push_back(recompress(
             &source_map[&track],
             &out_path,
@@ -849,7 +852,7 @@ fn run() -> Result<()> {
     while let Some(job) = process_next.pop_front() {
         let out_path = album_path.join(job.output_path(padding));
         let track = job.track.unwrap();
-        println!("  #{track} → {:#?}", out_path.file_name().unwrap());
+        println!("  #{track} → \"{}\"", out_path.file_name().unwrap().to_str().unwrap());
         process_working.push_back(recompress(
             &source_map[&track],
             &out_path,
