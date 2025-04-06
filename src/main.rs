@@ -26,7 +26,7 @@ use std::fmt;
 use std::fs::{self, File};
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
-use std::process::{Child, Command, Stdio};
+use std::process::{Child, Command, ExitCode, Stdio};
 use std::sync::LazyLock;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -981,12 +981,13 @@ fn run() -> Result<()> {
     Ok(())
 }
 
-fn main() {
+fn main() -> ExitCode {
     match run() {
-        Ok(()) => (),
+        Ok(()) => ExitCode::SUCCESS,
         Err(err) => {
-            eprintln!("{err}");
-            std::process::exit(1);
+            eprintln!("ERROR: {err}");
+            eprintln!("Exiting with failure ...");
+            ExitCode::FAILURE
         }
     }
 }
